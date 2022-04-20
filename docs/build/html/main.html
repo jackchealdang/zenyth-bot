@@ -71,9 +71,83 @@
   <section id="module-main">
 <span id="main-module"></span><h1>main module<a class="headerlink" href="#module-main" title="Permalink to this headline"></a></h1>
 <dl class="py function">
+<dt class="sig sig-object py" id="main.balance">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">balance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main.balance" title="Permalink to this definition"></a></dt>
+<dd><p>A class that implements the protocol for a bot text command.</p>
+<p>These are not created manually, instead they are created via the
+decorator or functional interface.</p>
+<dl>
+<dt>name: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></dt><dd><p>The name of the command.</p>
+</dd>
+<dt>callback: <span class="xref std std-ref">coroutine</span></dt><dd><p>The coroutine that is executed when the command is called.</p>
+</dd>
+<dt>help: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></dt><dd><p>The long help text for the command.</p>
+</dd>
+<dt>brief: Optional[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</dt><dd><p>The short help text for the command.</p>
+</dd>
+<dt>usage: Optional[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</dt><dd><p>A replacement for arguments in the default help text.</p>
+</dd>
+<dt>aliases: Union[List[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>], Tuple[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</dt><dd><p>The list of aliases the command can be invoked under.</p>
+</dd>
+<dt>enabled: <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></dt><dd><p>A boolean that indicates if the command is currently enabled.
+If the command is invoked while it is disabled, then
+<code class="xref py py-exc docutils literal notranslate"><span class="pre">DisabledCommand</span></code> is raised to the <code class="xref py py-func docutils literal notranslate"><span class="pre">on_command_error()</span></code>
+event. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</dd>
+<dt>parent: Optional[<code class="xref py py-class docutils literal notranslate"><span class="pre">Command</span></code>]</dt><dd><p>The parent command that this command belongs to. <code class="docutils literal notranslate"><span class="pre">None</span></code> if there
+isn’t one.</p>
+</dd>
+<dt>cog: Optional[<code class="xref py py-class docutils literal notranslate"><span class="pre">Cog</span></code>]</dt><dd><p>The cog that this command belongs to. <code class="docutils literal notranslate"><span class="pre">None</span></code> if there isn’t one.</p>
+</dd>
+<dt>checks: List[Callable[[<code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]]</dt><dd><p>A list of predicates that verifies if the command could be executed
+with the given <code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code> as the sole parameter. If an exception
+is necessary to be thrown to signal failure, then one inherited from
+<code class="xref py py-exc docutils literal notranslate"><span class="pre">CommandError</span></code> should be used. Note that if the checks fail then
+<code class="xref py py-exc docutils literal notranslate"><span class="pre">CheckFailure</span></code> exception is raised to the <code class="xref py py-func docutils literal notranslate"><span class="pre">on_command_error()</span></code>
+event.</p>
+</dd>
+<dt>description: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></dt><dd><p>The message prefixed into the default help command.</p>
+</dd>
+<dt>hidden: <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the default help command does not show this in the
+help output.</p>
+</dd>
+<dt>rest_is_raw: <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">False</span></code> and a keyword-only argument is provided then the keyword
+only argument is stripped and handled as if it was a regular argument
+that handles <code class="xref py py-exc docutils literal notranslate"><span class="pre">MissingRequiredArgument</span></code> and default values in a
+regular matter rather than passing the rest completely raw. If <code class="docutils literal notranslate"><span class="pre">True</span></code>
+then the keyword-only argument will pass in the rest of the arguments
+in a completely raw matter. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+<dt>invoked_subcommand: Optional[<code class="xref py py-class docutils literal notranslate"><span class="pre">Command</span></code>]</dt><dd><p>The subcommand that was invoked, if any.</p>
+</dd>
+<dt>require_var_positional: <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code> and a variadic positional argument is specified, requires
+the user to specify at least one argument. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.5.</span></p>
+</div>
+</dd>
+<dt>ignore_extra: <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, ignores extraneous strings passed to a command if all its
+requirements are met (e.g. <code class="docutils literal notranslate"><span class="pre">?foo</span> <span class="pre">a</span> <span class="pre">b</span> <span class="pre">c</span></code> when only expecting <code class="docutils literal notranslate"><span class="pre">a</span></code>
+and <code class="docutils literal notranslate"><span class="pre">b</span></code>). Otherwise <code class="xref py py-func docutils literal notranslate"><span class="pre">on_command_error()</span></code> and local error handlers
+are called with <code class="xref py py-exc docutils literal notranslate"><span class="pre">TooManyArguments</span></code>. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</dd>
+<dt>cooldown_after_parsing: <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, cooldown processing is done after argument parsing,
+which calls converters. If <code class="docutils literal notranslate"><span class="pre">False</span></code> then cooldown processing is done
+first and then the converters are called second. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="main.get_bank_data">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">get_bank_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.get_bank_data" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.meow_this">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">meow_this</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.meow_this" title="Permalink to this definition"></a></dt>
+<dd><p>_summary_</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="main.on_ready">
