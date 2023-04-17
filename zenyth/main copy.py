@@ -12,18 +12,22 @@ TOKEN = config.token
 #client = discord.Client()
 client = commands.Bot(command_prefix = "zen ")
 
+
+
 @client.event
 async def on_ready():
     """_summary_
     """
     print('We have logged in as {0.user}'.format(client))
 
+def meow_this():
+    """_summary_
+    """
+    print('meow!')
+
 @client.command()
 async def balance(ctx):
-    """_summary_
-
-    Args:
-        ctx (_type_): _description_
+    """This will check the balance.
     """
 
     await open_account(ctx.author)
@@ -39,13 +43,9 @@ async def balance(ctx):
     em.add_field(name = "Bank", value = bank_amt)
     await ctx.send(embed = em)
 
+
 @client.command()
 async def beg(ctx):
-    """For real, naw I hate it!
-
-    Args:
-        ctx (_type_): _description_
-    """
     await open_account(ctx.author)
 
     users = await get_bank_data()
@@ -55,10 +55,14 @@ async def beg(ctx):
 
     await ctx.send(f"Someone gave you {earnings} coins!!")
 
+
     users[str(user.id)]["wallet"] += earnings
 
     with open("mainbank.json","w") as f:
         json.dump(users,f)
+
+
+
 
 async def open_account(user):
     users = await get_bank_data()
@@ -73,6 +77,7 @@ async def open_account(user):
     with open("mainbank.json","w") as f:
         json.dump(users,f)
     return True
+
 
 async def get_bank_data():
     with open("mainbank.json","r") as f:
